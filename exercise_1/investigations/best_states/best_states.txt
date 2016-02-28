@@ -1,0 +1,68 @@
+Q. Which state are models of high quality care that provide the best care based on quality measures ?
+Ans.
+   My conclusion is that the below list represents (in order)
+   the 10 best states (among all states with at least 8 measures of
+   quality) and that an aggregate rank based on rankings on each indivdual
+   quality measure is a more appropriate way of measuring overall quality
+   of care than to simply add average together different quality scores.
+   Another conclusion that can be drawn from the data is that the top 10
+   states are very close to each other in terms of average scores.
+   
+   The following 10 states are the 10 best states that provide the
+   best quality of care as measured over a wide array (at least 8 quality
+   measures) of measures.
+
+NOTE: The below output was reformatted for clarity since Hive does not have
+      a pretty-print option 
+      
+rank state  agg_score	avg_score  score_stddev
+1	UT  96303.44	88.23      18.73
+2	ME  90968.87	87.93      19.37
+3	NH  67095.13	86.47      19.59
+4	CO 169446.96	87.05      19.32
+5	WI 303021.72	87.89      18.91
+6	ID  58500.91	87.14      19.53
+7	SD  60984.09	88.05      18.58
+8	FL 634719.99	88.23      18.62
+9	SC 192832.66	87.69      18.59
+10	VA 272364.80	88.02      18.46
+
+
+   The results above support my conclusion that simply summing
+   different measures does not produce an accurate list of best hospitals.
+   This is somewhat obvious without even looking at the data since a
+   state with many hospitals will have a higher total score than a state
+   with few hospitals (fewer quality scores)
+   It is also evident from the table above, that higher rated states do not
+   necessarily have the largest aggregate score (i.e. sum of scores
+   of different quality measures). For example #1 state Utah has an
+   aggregate score of of only 96303 while #10 state Virginia
+   has a higher aggregate score of 272364. The results also support the
+   conclusion that the top 10 states are very close to each other
+   since all of the top 10 states have average scores of about 87/88
+   and similar standard deviations of 18/19
+
+   The scores used are normalized scores calculated as per the procedure
+   in investigations/best_hospitals/best_hospitals.txt
+
+   Once the scores are normalized we average scores for each
+   (state, measure) combination across all hospitals in the state.
+   We then rank all the states on each measure i.e. each state
+   gets a separate rank for each measure
+   We then find the average rank of each state across all measures
+   (which creates one average rank for each state). We then rank states
+   by their average rank.
+
+   The rationale for ranking all the state on each measure separately is
+   the same as in the case of best hospitals. Using rankings instead of
+   average scores is a better way of combining different measures.
+   An example will best illustrate the problem with the average
+   score approach. Consider a measure M1 where the scores are high for
+   all states and tightly clustered and another measure M2
+   where the scores are very low and are very different. If we just add
+   scores for measures M1 and M2 the disparity in the low scores for
+   M2 will be lost. A ranking approach removes the idiosyncracies of the
+   individual measures.
+  
+   The rationale for normalizing scores is the same as in the best hospitals
+   case. See investigations/best_hospitals/best_hospitals.txt 

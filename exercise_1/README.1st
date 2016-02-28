@@ -1,0 +1,8 @@
+
+In this exercise, I use the term procedures somewhat loosely to encompass
+everything that flows from a medical procedure whether it is the number of
+minutes taken to start or complete a procedure, the rate of readmission or
+mortality resulting from a procedure, the presence or absence of a procedure etc.
+Thus the use of the term procedure in this exercise (and in the ER diagram)
+encompasses actual medical procedures, the results of procedures, the time taken
+to complete a procedure, other quality measures of medical procedures etc.

@@ -1,0 +1,45 @@
+Q. Which procedures have the greatest variability between hospitals
+Ans.
+   My conclusion is that the below list represents (in descending order)
+   the 10 procedures that are the most variable between hospitals.
+   Another conclusion is that even the most variable procedure does not have
+   very high variability.
+   
+   The following 10 procedures are the 10 most variable procedures in
+   descending order.
+
+NOTE: The below output was reformatted for clarity since Hive does not have
+      a pretty-print option 
+      
+rank	procedure_name	                         score_stddev agg_score avg_score
+1  ["Thrombolytic Therapy"]	                    21.95      72455.0    82.90
+2  ["Head CT Scan Results for Acute...ED Arrival"]  21.84      63978.0    66.71
+3  ["Fibrinolytic Therap...30 Minutes of Hospital"] 18.77        150.0    50.0
+4  ["Fibrinolytic Therapy..30 Minutes of ED"]       18.04       4777.0    70.25
+5  ["Venous Thromboembolism Warfarin..."]           16.30     219361.0    88.88
+6  ["Median Time to Fibrinolysis"]	            15.43      5273.46    77.55
+7  ["Venous Thromboembolism Prophylaxis"]	    15.25     314930.0	  89.11
+8  ["Median Time to Transfer ... Acute Coronary.."] 14.73      32772.0    80.12
+9  ["Stroke Education"]	                            14.01     214760.0    90.53
+10 ["Home Management Plan of Care ... Document..."] 12.71	8580.0	  89.37
+
+   The results above support my conclusion that that even the most variable
+   procedures do not show very high variability. The standard deviation
+   for even the most variable procedure is only 21 i.e. approximately 20
+   normalized score points is the average variation of a data point from the
+   mean for this measure.
+
+   The scores used are normalized scores calculated as per the procedure
+   in investigations/best_hospitals/best_hospitals.txt
+
+   The standard deviation was chosen over variance as a measure of
+   variability because it has the same units as the normalized
+   score.
+
+   The standard deviation was calculated using the stddev_pop()
+   aggregate function. It was computed separately for each measure
+   across all hospitals and then the procedures were ranked
+   based on descending order of variability.
+
+   The rationale for normalizing scores is the same as in the best hospitals
+   case. See investigations/best_hospitals/best_hospitals.txt 

@@ -1,0 +1,80 @@
+Q. Are variability of procedures  correlated with patient survey
+   response
+Ans.
+    My conclusion is that procedure variability scores show
+    a different pattern than variability in patient survey response.
+    Correlation is a somewhat difficult question to answer because
+    we are essentially comparing one set of procedures
+    (using hospital quality measures) and a completely different
+    set of procedures which are the topic of the patient surveys.
+    The rationale behind the calculation I carry out is explained
+    below.
+
+    src      median_stddev   avg_stddev   min_stddev   max_stddev
+   Procedure  5.62           7.21         0.14         21.95
+   Survey    28.76          29.89        28.33         34.63
+
+   For the procedural variation part of the question I calculate
+   the standard deviation of each quality measure
+
+   For the survey part of the question, for each survey topic,
+   I look at the achievement score (for details on
+   achievement/improvement/dimension scores and other
+   survey scoring details, please look at
+   "investigations/patient_survey_correlation/hospital_survey_correlation.txt")
+   I do not consider either the HCAHPS Base score or HCAHPS Consistency
+   score. I calculate the standard deviation for each topic in the
+   survey.
+
+   A topic is a particular question or set of questions in the
+   survey that are associated with each other. So nurse communication
+   is one topic and hospital quietness and cleanliness is another
+   topic.
+
+   The difficulty in answering the question is that the hospital
+   quality measures reference a certain set of quality-measures/procedures
+   whereas the survey topics are on different procedures/issues.
+
+   It is not possible to make an apples to apples correlational study
+   since the set of procedures and topics are different.
+   Instead what I have done is computed for each procedure/quality measure
+   the standard deviation and then calculated the median std-dev, mean std-dev,
+   min and max std-dev across all measures.
+
+   Similarly for each topic in the survey I calculated the standard
+   devation and then computed the median std-dev, mean std-dev,
+   min and max std-dev across all topic.
+
+   I then compared the values of the median/mean/min/max of std-dev
+   for both procedure quality measures and survey topics.
+   The results show that survey topic variability is relatively
+   higher with min and max std-dev varying between 28 and 34
+   but the variability is quite consistent ranging only between
+   28 and 34.
+   On the other hand procedure quality measures show lower
+   variability (maximum variability is only 21.95) but the
+   variability is less consistent ranging from 0.14
+   to 21.95
+
+   The normalized scores used are calculated as per the
+   normalization procedure described in in
+   investigations/best_hospitals/best_hospitals.txt
+
+   The raw patient survey data consists of survey responses on
+   a number of questions and includes an achivement score,
+   an improvement score (which is improvment relative to a
+   baseline score of a baseline year, several years back)
+   and a dimension score which is the higher of the
+   achievment and improvement scores. In addition there
+   is a HCAHPS Base score (out of 80) and HCAHPS consistency score
+   (out of 20) which is used computed from the other survey scores
+   and the sum is a score out of 100 which is used by the Government
+   as an composite score for each patient survey. I decided to use
+   this composite score from every survey as a measure of a hospitals score
+   and used the average of the composite scores for each hospital to calculate
+   the hospitals rank according to patient surveys.
+
+   After ranking each hospital based on procedure quality measures
+  and then ranking each hospital based on survey composite scores, I
+  calculated the Pearson correlation coefficient using the Hive corr()
+  aggregation function. 

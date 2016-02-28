@@ -1,0 +1,96 @@
+Q. Which hospitals are models of high quality care
+   that provide the best care based on quality measures ?
+Ans.
+
+   My conclusion is that the below list represents (in order)
+   the 10 best hospitals (among all hospitals with at least 8 measures of
+   quality) and that an aggregate rank based on rankings on each indivdual
+   quality measure is a more appropriate way of measuring overall quality
+   of care than to simply add or even average together different quality scores.
+   
+   The following 10 hospitals are the 10 best hospitals that provide the
+   best quality of care as measured over a wide array (at least 8 quality
+   measures) of measures.
+
+NOTE: The below output was reformatted for clarity since Hive does not have
+      a pretty-print option 
+      
+   
+agg_rank	name	                       agg_score  avg_score score_stddev
+1  ["BAYLOR HEART AND VASCULAR HOSPITAL"]	1727.60   95.97     6.64
+2  ["HOSPITAL FOR SPECIAL SURGERY"]	         981.00	  98.1      3.43
+3  ["NORTHSIDE MEDICAL CENTER"]	                 781.00	  97.62     4.35
+4  ["SCRIPPS GREEN HOSPITAL"]	                3621.30   95.29     6.50
+5  ["KAISER FOUNDATION HOSPITAL - SOUTH BAY"]   2356.39   94.25    19.69
+6  ["METHODIST AMBULATORY SURGERY HOSPITAL NW"]	 870.44   87.04    29.34
+7  ["TEXAS ORTHOPEDIC HOSPITAL"]	         860.41   86.04    29.29
+8  ["BAYLOR SURGICAL HOSPITAL AT LAS COLINAS"]	 949.09   86.28    27.59
+9  ["KAISER FOUNDATION HOSPITAL - ROSEVILLE"]   2540.32   94.08    19.08
+10 ["UT SOUTHWESTERN UNIVERSITY HOSPITAL-Z..."] 1755.60   97.53     4.97
+
+   The results above support my conclusion that simply summing or averaging
+   different measures does not produce an accurate list of best hospitals.
+   As is evident from the table above, the higher rated hospitals do not
+   necessarily have the largest aggregate score (i.e. sum of scores
+   of different quality measures). For example #1 hospital Baylor has an
+   aggregate score of of only 1727 while #4 hospital Scripps Green Hospital
+   has a higher aggregate score of 3621. Nor do high ranked hospitals
+   necessarily have a higher average score as compared to lower ranked
+   hospitals. For example, #1 hospital, Baylor Heart and Vacular Hospital
+   has an average score of 95.97 while #10 hospital UT Southwestern University
+   has a higher average score of 97.53
+
+   The key point here is that the important metric here is aggregate rank
+   (agg_rank) rather than aggregate score (agg_score) or average score
+   (avg_score). Essentially the foundation for this argument is that we cannot
+   simply add different quality measures together blindly. My approach involves
+   first normalizing the quality measure scores so that every score has a
+   value between 0 and 100. If the quality measure is a percent, no conversion
+   is needed. If the quality measure is a ratio or the number of minutes, it is
+   converted into a 0-100 range by using the following formula
+
+     normalized score
+     for measure M1     = 100 * (raw_M1 - min_raw_M1)/(max_raw_M1 - min_raw_M1)
+
+  A slightly different tack was adopted for measures where a higher value
+  indicates worse quality (such as mortality and readmission rates).
+  We normalized the score to between 0 and 100 as with other
+  measures, but we then took the complement (i.e. subtracted from 100)
+  to arrive at the true score (where a higher value is better).
+  
+  Even after normalizing the score, we cannot just add or average the
+  normalized scores. For example measure M1 may represent a critical
+  procedure (say attending to a heart attack patient in the ER within
+  10 minutes of arrival). Any reasonably competent accredited
+  hospital probably achieves a normalized score near 100 for this
+  procedure/measure. There may be other measures such as mortality rate
+  where the pack of hospitals is more differentiated, with the best
+  hospitals having very low mortality rates.
+  
+  Adding or averaging these two very different scores together does not in my
+  opinion calculate the correct metric for quality of a hospital.
+
+  The approach I have adopted instead is to rank all the hospitals separately
+  on each quality measure. I then calculate the aggregate rank as the average
+  rank of a hospital across all measures. Using rank instead of scores tells us
+  how each hospital performs compared to its peers in each measure separately
+  removing any idiosyncrasies of a particular measure (as described above).
+  This gives us a more accurate picture of the quality of a hospital.
+  
+  One question that may arise is that since I compute the ranks separately
+  for each measure why do I bother with normalizing the score to between
+  0 and 100. The answer is that this normalization happens in the
+  "transforming" phase during which creation of tables takes place
+  while the ranking happens in the "investigation" phase where we are
+  simply doing a query. The reason for that is simple. It is good practice
+  to have normalized scores for each measure stored in a table as that
+  can enable other types of queries to be run quickly without requiring
+  expensive reprocessing. The raw scores by themselves are less likely
+  to be useful and in the rare event that they are needed, they can be
+  pulled from the raw tables (tables created during the "loading" stage)
+
+  In my query during the "investigation" phase, I limited my query to hospitals
+  with at least 8 different quality measures. The reason for this is that
+  we want hospitals that do well across a wide range of procedures and we
+  do not want consider hospitals that have quality scores in just a
+  few measures.
