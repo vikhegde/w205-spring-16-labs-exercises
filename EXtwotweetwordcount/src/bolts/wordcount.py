@@ -285,16 +285,16 @@ class WordCounter(Bolt):
 
         # Uncomment the following create-db, create-table code if DB/table are
         # not present
-        pg_db = PGDB(self.db_name, self.table_name, "postgres", "pass",
-            "localhost", "5432")
-        pg_db.create_db()
-        pg_db.open_db()
-        fields = []
-        fields.append(("word", "varchar", None))
-        fields.append(("count","int", None))
-        constraint = 'CONSTRAINT pkey_word PRIMARY KEY (word)'
-        pg_db.create_table(self.table_name, fields, constraint)
-        pg_db.close_db()
+        #pg_db = PGDB(self.db_name, self.table_name, "postgres", "pass",
+        #    "localhost", "5432")
+        #pg_db.create_db()
+        #pg_db.open_db()
+        #fields = []
+        #fields.append(("word", "varchar", None))
+        #fields.append(("count","int", None))
+        #constraint = 'CONSTRAINT pkey_word PRIMARY KEY (word)'
+        #pg_db.create_table(self.table_name, fields, constraint)
+        #pg_db.close_db()
         
 
     def process(self, tup):
