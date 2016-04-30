@@ -1,0 +1,2 @@
+
+NOTE PLEASE: To get the million song pipeline working, please mount the Million Song EBS volume (available on AWS) over this directory.

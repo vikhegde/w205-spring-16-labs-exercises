@@ -1,0 +1,21 @@
+[
+    {"comment" : "make sure there is no trailing comma, else json won't parse"},
+    {"resource" : "MLRoot", "mount_point" : "/root"},
+    {"resource" : "MLFetch", "mount_point" : "/root/fetch"},
+    {"resource" : "MLDerive", "mount_point" : "/root/derive"},
+    {"resource" : "MLModel", "mount_point" : "/root/model"},
+    {"resource" : "MLIngest", "mount_point" : "/root/fetch/ingest"},
+    {"resource" : "MLDecompress", "mount_point" : "/root/fetch/decompress"},
+    {"resource" : "MLUnarchive", "mount_point" : "/root/fetch/unarchive"},
+    {"resource" : "MLRaw", "mount_point" : "/root/fetch/raw"},
+    {"resource" : "MLHttpDownload",
+		"mount_point" : "/root/fetch/ingest/http_download"},
+    {"resource" : "MLFSDownload",
+		"mount_point" : "/root/fetch/ingest/fs_download"},
+    {"resource" : "CollectH5Files",
+		"mount_point" : "/root/fetch/raw/collect_h5"},
+    {"resource" : "ExtractTrackData",
+		"mount_point" : "/root/derive/millsong_extract"},
+    {"resource" : "GaussNB", "mount_point" : "/root/model/gauss_nb"}
+
+]

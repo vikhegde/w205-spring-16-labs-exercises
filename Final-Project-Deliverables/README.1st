@@ -1,0 +1,88 @@
+Please read the following for instructions on how to run this project
+and also for a description of the deliverables.
+
+Since storage is implemented transparent to the client, a static/class method
+is used to allow access to the underlying postgres database. If a password
+is implemented for postgres, it must be supplied as follows:
+  In each runnable script change the passowrd argument in the following call:
+
+  MLRoot.init_storage(password="xypostgres", host="localhost", port="5432")
+
+  This call is found at the top of each of the run_* scripts
+
+  In the event of authentication issues, either change the authentication
+  method to "trust" in /data/pgsql/data/pg_hba.conf or set the method
+  to "password" and then set the password using ALTER ROLE or ALTER USER
+
+  If there are still issues with the DB, please send mail to vikhegde@gmail.com
+  I will provide a quick resolution. This project has been tested with
+  postgres version 8.3 (Same version as in the W205 AMI)
+
+This project uses exceptions exclusively as the error handling mechanism. This
+seemed to be the most useful way of providing information on what went wrong.
+
+Successfully running this project also requires a number of python modules. The
+most problematic of these is the "magic" module which implements file magic
+capabilities. The module is available via pip as python-magic version 0.4.10
+or 0.4.11 (I used the latter). In the event of difficulties locating this
+module, please send email to vikhegde@gmail.com and I will help locate it.
+The main problem is that there are two different python modules that
+provide libmagic support. The one I used for this project is at the
+following URL:
+  https://pypi.python.org/pypi/python-magic/   
+Another issue with the magic module is that it is very difficult to use on
+Windows. I would recommend using Unix/Linux instead
+
+This project has 3 runnable python scripts:
+  1. run_sample_pipeline.py - runs a pipeline on a small artificial
+     dataset. Meant to demonstrate some of the capabilities of the
+     framework including running the pipeline again resuming from
+     some intermediate node (to avoid redundant reprocessing if data
+     from some stages can be reused.)
+  2. run_mnist_pipeline.py - Runs Bernoulli Naive Bayes and Logistic
+     regression classifiers on the MNIST dataset. This can take more than
+     5-10 minutes to run
+  3. run_millionsong_pipeline.py - Runs Gaussian Naive Bayes and Logistic
+     regression classifiers on the Million song dataset. This can take over
+     6 hours to complete and running it is *not recommended*. If one does
+     decide to run this, then note that it is setup such that it expects
+     the Million Song EBS volume to be mounted on top of a subdirectory of
+     this directory (million_song_dir)
+
+The most useful source of information on this project's architecture is the
+Powerpoint Presentation (W205-final-project-presentation.pptx - included in
+this directory)
+
+The purpose of the rest of the files in this project is described below:
+ hdf5_getters.py - A python script supplied by the Million Song project to
+                   parse HDF5 file format. 
+ million_song_dir - A directory where the million song EBS volume should be
+                    mounted to run run_millsong_pipeline.py
+ millsong_accuracy_all.png - A PNG file showing plot of accuracy vs. sample
+                             size for classifiers on the Million song dataset
+ millsong_accuracy_small_samples.png - Same as above for small sample sizes
+ mnist_accuracy_all.png - Similar for MNIST dataset (all sample sizes)
+ mnist_accuracy_small_samples.png - Similar for MNIST dataset (small sample
+                      sizes)
+ ml_pipeline.py - The main file implementing the ML pipeline framework
+
+ pgdb_funcs.py - Implements all of the persistent storage code for postgres
+                 (uses psycopg2)
+
+ mnist_original.zip  - MNIST dataset
+
+ mnttab_mnist_logistic.json - Mount table for MNIST and Logistic regression
+ mnttab_sample_pipeline.json - Mount table for the toy dataset
+ mnttab_mnist_bernoulli_NB.json - Mount table for MNIST and Bernoulli NB
+ mnttab_millsong_gauss_NB.json - Mount table for Million Song and Gaussian NB
+ mnttab_millsong_logistic.json - Million song and Logistic mount table
+
+ The rest of the files are all examples of the toy datasets in various
+ decompressed and archive formats
+     sample_data.tar, sample_data.tar.bz2, sample_data.tar.gz, sample_data.zip
+
+ The following two files are the toy data set provided in CSV format for
+ readability. These are not consumed directly by any of the runnable scripts
+        sample_train_data.csv
+        sample_test_data.csv
+ 
